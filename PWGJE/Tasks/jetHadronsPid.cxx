@@ -412,8 +412,8 @@ struct JetHadronsPid {
     double eta = p.Eta();
     double phi = p.Phi();
 
-    u1.SetPtEtaPhi(pt, eta, phi + PI / 2.0);
-    u2.SetPtEtaPhi(pt, eta, phi - PI / 2.0);
+    u1.SetPtEtaPhi(pt, eta, phi + PIHalf);
+    u2.SetPtEtaPhi(pt, eta, phi - PIHalf);
   }
 
   template <typename TrackIts>
