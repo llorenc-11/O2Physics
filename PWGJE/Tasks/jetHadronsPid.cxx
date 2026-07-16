@@ -335,10 +335,8 @@ struct JetHadronsPid {
 
     // Jet Cone
 
-    const double coneRange = rJet;
-
-    AxisSpec axisDeltaEtaCone{80, -coneRange, coneRange, "#Delta#eta = #eta_{track} - #eta_{jet}"};
-    AxisSpec axisDeltaPhiCone{80, -coneRange, coneRange, "#Delta#varphi = #varphi_{track} - #varphi_{jet}"};
+    AxisSpec axisDeltaEtaCone{80, -rJet, rJet, "#Delta#eta = #eta_{track} - #eta_{jet}"};
+    AxisSpec axisDeltaPhiCone{80, -rJet, rJet, "#Delta#varphi = #varphi_{track} - #varphi_{jet}"};
     AxisSpec axisPtTrackCone{100, 0.0, 10.0, "#it{p}_{T}^{track} (GeV/#it{c})"};
 
     registryData.add("data/jets/cone/all_tracks_2d", "All tracks in jet cone;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisDeltaEtaCone, axisDeltaPhiCone});
