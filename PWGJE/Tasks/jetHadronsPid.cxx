@@ -458,7 +458,7 @@ struct JetHadronsPid {
     return TESTBIT(track.itsClusterMap(), layer - 1);
   }
 
-  struct pidResult {
+  struct PidResult {
     bool isPion, isKaon, isProton;
   };
 
@@ -602,7 +602,7 @@ struct JetHadronsPid {
       double dcaz = track.dcaZ();
       int charge = track.sign();
 
-      pidResult pid = getPid(track);
+      PidResult pid = getPid(track);
 
       if (pid.isPion) {
         registryData.fill(HIST("data/pure/pions/pion_pure_tpc"), pt, track.tpcNSigmaPi());
@@ -768,7 +768,7 @@ struct JetHadronsPid {
         double dcaz = track.dcaZ();
         int charge = track.sign();
 
-        pidResult pid = getPid(track);
+        PidResult pid = getPid(track);
 
         if (pid.isPion) {
           registryData.fill(HIST("data/jets/pions/pion_jet_tpc"), pt, track.tpcNSigmaPi());
@@ -885,7 +885,7 @@ struct JetHadronsPid {
         double dcaz = track.dcaZ();
         int charge = track.sign();
 
-        pidResult pid = getPid(track);
+        PidResult pid = getPid(track);
 
         if (pid.isPion) {
           registryData.fill(HIST("data/ue/pions/pion_ue_tpc"), pt, track.tpcNSigmaPi());
@@ -1026,7 +1026,7 @@ struct JetHadronsPid {
         registryData.fill(HIST("mc/reconstruction/hadrons/mc_sec_hadron_pt"), pt);
       }
 
-      pidResult pid = getPid(track);
+      PidResult pid = getPid(track);
 
       if (pid.isPion) {
         registryData.fill(HIST("mc/reconstruction/pions/rec_pion_all"), pt);
