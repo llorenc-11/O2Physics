@@ -400,14 +400,20 @@ struct JetHadronsPid {
 
   void getPerpendicularDirections(const TVector3& p, TVector3& u1, TVector3& u2)
   {
-    double const treshold = 1e-9;
-    if (p.Mag2() < treshold) {
+    double const threshold = 1e-9;
+
+    if (p.Pt() < threshold) {
       u1.SetXYZ(0, 0, 0);
       u2.SetXYZ(0, 0, 0);
       return;
     }
-    u1 = p.Orthogonal();
-    u2 = p.Cross(u1);
+
+    double pt = p.Pt();
+    double eta = p.Eta();
+    double phi = p.Phi();
+
+    u1.SetPtEtaPhi(pt, eta, phi + PIHalf);
+    u2.SetPtEtaPhi(pt, eta, phi - PIHalf);
   }
 
   template <typename TrackIts>
