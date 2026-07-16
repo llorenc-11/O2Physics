@@ -519,13 +519,13 @@ struct JetHadronsPid {
     registryData.add("mc/reconstruction/pions/rec_pion_all", "All Tracks PID'd as Pions", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/pions/mc_rec_pion_pt", "True Primary Pions (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/pions/mc_sec_pion_pt", "Secondary Pions (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/pions/contamination_matrix_pion", "Pion PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/pions/contamination_matrix_pion", "Pion PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/pions/pos/mc_rec_pion_pos_pt", "Reconstructed Primary #pi^{+} pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/pions/pos/contamination_matrix_pion_pos", "#pi^{+} PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/pions/pos/contamination_matrix_pion_pos", "#pi^{+} PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/pions/neg/mc_rec_pion_neg_pt", "Reconstructed Primary #pi^{-} pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/pions/neg/contamination_matrix_pion_neg", "#pi^{-} PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/pions/neg/contamination_matrix_pion_neg", "#pi^{-} PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/pions/pos/rec_pion_pos_all", "All Tracks PID'd as #pi^{+}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/pions/neg/rec_pion_neg_all", "All Tracks PID'd as #pi^{-}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/pions/pos/mc_sec_pion_pos_pt", "Secondary #pi^{+} (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
@@ -534,33 +534,47 @@ struct JetHadronsPid {
     registryData.add("mc/reconstruction/kaons/rec_kaon_all", "All Tracks PID'd as Kaons", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/kaons/mc_rec_kaon_pt", "True Primary Kaons (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/kaons/mc_sec_kaon_pt", "Secondary Kaons (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/kaons/contamination_matrix_kaon", "Kaon PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/kaons/contamination_matrix_kaon", "Kaon PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/kaons/pos/mc_rec_kaon_pos_pt", "Reconstructed Primary K^{+} pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/kaons/pos/contamination_matrix_kaon_pos", "K^{+} PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/kaons/pos/contamination_matrix_kaon_pos", "K^{+} PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/kaons/pos/rec_kaon_pos_all", "All Tracks PID'd as K^{+}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/kaons/neg/rec_kaon_neg_all", "All Tracks PID'd as K^{-}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/kaons/pos/mc_sec_kaon_pos_pt", "Secondary K^{+} (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/kaons/neg/mc_sec_kaon_neg_pt", "Secondary K^{-} (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/kaons/neg/mc_rec_kaon_neg_pt", "Reconstructed Primary K^{-} pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/kaons/neg/contamination_matrix_kaon_neg", "K^{-} PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/kaons/neg/contamination_matrix_kaon_neg", "K^{-} PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/protons/rec_proton_all", "All Tracks PID'd as Protons", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/mc_rec_proton_pt", "True Primary Protons (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/mc_sec_proton_pt", "Secondary Protons (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/protons/contamination_matrix_proton", "Proton PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/protons/contamination_matrix_proton", "Proton PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/protons/pos/mc_rec_proton_pos_pt", "Reconstructed Primary p pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/protons/pos/contamination_matrix_proton_pos", "p PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/protons/pos/contamination_matrix_proton_pos", "p PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
     registryData.add("mc/reconstruction/protons/neg/mc_rec_proton_neg_pt", "Reconstructed Primary #bar{p} pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
-    registryData.add("mc/reconstruction/protons/neg/contamination_matrix_proton_neg", "#bar{p} PID Contamination", HistType::kTH2F, {{4000, -0.5, 3999.5, "Absolute PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/protons/neg/contamination_matrix_proton_neg", "#bar{p} PID Contamination", HistType::kTH2F, {{8000, -4000.5, 3999.5, "PDG Code"}, {120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/pos/rec_proton_pos_all", "All Tracks PID'd as p", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_all", "All Tracks PID'd as #bar{p}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/pos/mc_sec_proton_pos_pt", "Secondary p (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/neg/mc_sec_proton_neg_pt", "Secondary #bar{p} (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
 
+    registryData.add("mc/reconstruction/pions/pos/rec_pion_pos_tpc", "MC TPC #pi^{+} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
+    registryData.add("mc/reconstruction/pions/pos/rec_pion_pos_tof", "MC TOF #pi^{+} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
+    registryData.add("mc/reconstruction/pions/neg/rec_pion_neg_tpc", "MC TPC #pi^{-} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
+    registryData.add("mc/reconstruction/pions/neg/rec_pion_neg_tof", "MC TOF #pi^{-} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
+
+    registryData.add("mc/reconstruction/kaons/pos/rec_kaon_pos_tpc", "MC TPC K^{+} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
+    registryData.add("mc/reconstruction/kaons/pos/rec_kaon_pos_tof", "MC TOF K^{+} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
+    registryData.add("mc/reconstruction/kaons/neg/rec_kaon_neg_tpc", "MC TPC K^{-} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
+    registryData.add("mc/reconstruction/kaons/neg/rec_kaon_neg_tof", "MC TOF K^{-} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
+
+    registryData.add("mc/reconstruction/protons/pos/rec_proton_pos_tpc", "MC TPC p PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
+    registryData.add("mc/reconstruction/protons/pos/rec_proton_pos_tof", "MC TOF p PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
+    registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_tpc", "MC TPC #bar{p} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
+    registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_tof", "MC TOF #bar{p} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
     //////////////////////////////////////////////
     //                    MC
     //                   TRUTH
@@ -577,6 +591,21 @@ struct JetHadronsPid {
     registryData.add("mc/truth/protons/mc_gen_proton_pt", "Generated Primary Protons (Truth)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/truth/protons/pos/mc_gen_proton_pos_pt", "Generated Primary p pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/truth/protons/neg/mc_gen_proton_neg_pt", "Generated Primary #bar{p} pT", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+
+    registryData.add("mc/reconstruction/hadrons/rec_hadron_all", "All Tracks (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/hadrons/rec_hadron_tof_match", "All Tracks (Reconstructed) with TOF signal", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/hadrons/mc_rec_hadron_pt", "True Primary Tracks (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/hadrons/mc_sec_hadron_pt", "Secondary Tracks (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/truth/hadrons/mc_gen_hadron_pt", "Generated Primary Tracks", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+
+    registryData.add("mc/reconstruction/pions/pos/rec_pion_pos_tof_matched", "MC TOF Matched #pi^{+}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/pions/neg/rec_pion_neg_tof_matched", "MC TOF Matched #pi^{-}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+
+    registryData.add("mc/reconstruction/kaons/pos/rec_kaon_pos_tof_matched", "MC TOF Matched K^{+}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/kaons/neg/rec_kaon_neg_tof_matched", "MC TOF Matched K^{-}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+
+    registryData.add("mc/reconstruction/protons/pos/rec_proton_pos_tof_matched", "MC TOF Matched p", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_tof_matched", "MC TOF Matched #bar{p}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
   }
 
   void getPerpendicularDirections(const TVector3& p, TVector3& u1, TVector3& u2)
@@ -610,7 +639,6 @@ struct JetHadronsPid {
   template <typename TrackType>
   PidResult getPid(const TrackType& track)
   {
-
     constexpr int ClosestMatch = 0;
     constexpr int ExclusiveMatch = 1;
     constexpr int RejectionBased = 2;
@@ -1390,21 +1418,53 @@ struct JetHadronsPid {
       auto const& trueParticle = track.mcParticle();
 
       int pdg = std::abs(trueParticle.pdgCode());
+      int realpdg = trueParticle.pdgCode();
       bool isPrimary = trueParticle.isPhysicalPrimary();
       int charge = track.sign();
+
+      registryData.fill(HIST("mc/reconstruction/hadrons/rec_hadron_all"), pt);
+
+      if (track.hasTOF()) {
+        registryData.fill(HIST("mc/reconstruction/hadrons/rec_hadron_tof_match"), pt);
+      }
+
+      if (isPrimary) {
+        registryData.fill(HIST("mc/reconstruction/hadrons/mc_rec_hadron_pt"), pt);
+      } else {
+        registryData.fill(HIST("mc/reconstruction/hadrons/mc_sec_hadron_pt"), pt);
+      }
 
       PidResult pid = getPid(track);
 
       if (pid.isPion) {
         registryData.fill(HIST("mc/reconstruction/pions/rec_pion_all"), pt);
-        registryData.fill(HIST("mc/reconstruction/pions/contamination_matrix_pion"), pdg, pt);
+        registryData.fill(HIST("mc/reconstruction/pions/contamination_matrix_pion"), realpdg, pt);
 
         if (charge > 0) {
+
           registryData.fill(HIST("mc/reconstruction/pions/pos/rec_pion_pos_all"), pt);
-          registryData.fill(HIST("mc/reconstruction/pions/pos/contamination_matrix_pion_pos"), pdg, pt);
+
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/pions/pos/rec_pion_pos_tof_matched"), pt);
+          }
+          registryData.fill(HIST("mc/reconstruction/pions/pos/contamination_matrix_pion_pos"), realpdg, pt);
+
+          registryData.fill(HIST("mc/reconstruction/pions/pos/rec_pion_pos_tpc"), pt, track.tpcNSigmaPi());
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/pions/pos/rec_pion_pos_tof"), pt, track.tofNSigmaPi());
+          }
         } else {
           registryData.fill(HIST("mc/reconstruction/pions/neg/rec_pion_neg_all"), pt);
-          registryData.fill(HIST("mc/reconstruction/pions/neg/contamination_matrix_pion_neg"), pdg, pt);
+
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/pions/neg/rec_pion_neg_tof_matched"), pt);
+          }
+          registryData.fill(HIST("mc/reconstruction/pions/neg/contamination_matrix_pion_neg"), realpdg, pt);
+
+          registryData.fill(HIST("mc/reconstruction/pions/neg/rec_pion_neg_tpc"), pt, track.tpcNSigmaPi());
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/pions/neg/rec_pion_neg_tof"), pt, track.tofNSigmaPi());
+          }
         }
 
         if (isPrimary) {
@@ -1428,14 +1488,34 @@ struct JetHadronsPid {
 
       if (pid.isKaon) {
         registryData.fill(HIST("mc/reconstruction/kaons/rec_kaon_all"), pt);
-        registryData.fill(HIST("mc/reconstruction/kaons/contamination_matrix_kaon"), pdg, pt);
+        registryData.fill(HIST("mc/reconstruction/kaons/contamination_matrix_kaon"), realpdg, pt);
 
         if (charge > 0) {
+
           registryData.fill(HIST("mc/reconstruction/kaons/pos/rec_kaon_pos_all"), pt);
-          registryData.fill(HIST("mc/reconstruction/kaons/pos/contamination_matrix_kaon_pos"), pdg, pt);
+
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/kaons/pos/rec_kaon_pos_tof_matched"), pt);
+          }
+          registryData.fill(HIST("mc/reconstruction/kaons/pos/contamination_matrix_kaon_pos"), realpdg, pt);
+
+          registryData.fill(HIST("mc/reconstruction/kaons/pos/rec_kaon_pos_tpc"), pt, track.tpcNSigmaKa());
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/kaons/pos/rec_kaon_pos_tof"), pt, track.tofNSigmaKa());
+          }
         } else {
+
           registryData.fill(HIST("mc/reconstruction/kaons/neg/rec_kaon_neg_all"), pt);
-          registryData.fill(HIST("mc/reconstruction/kaons/neg/contamination_matrix_kaon_neg"), pdg, pt);
+
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/kaons/neg/rec_kaon_neg_tof_matched"), pt);
+          }
+          registryData.fill(HIST("mc/reconstruction/kaons/neg/contamination_matrix_kaon_neg"), realpdg, pt);
+
+          registryData.fill(HIST("mc/reconstruction/kaons/neg/rec_kaon_neg_tpc"), pt, track.tpcNSigmaKa());
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/kaons/neg/rec_kaon_neg_tof"), pt, track.tofNSigmaKa());
+          }
         }
 
         if (isPrimary) {
@@ -1459,14 +1539,31 @@ struct JetHadronsPid {
 
       if (pid.isProton) {
         registryData.fill(HIST("mc/reconstruction/protons/rec_proton_all"), pt);
-        registryData.fill(HIST("mc/reconstruction/protons/contamination_matrix_proton"), pdg, pt);
+        registryData.fill(HIST("mc/reconstruction/protons/contamination_matrix_proton"), realpdg, pt);
 
         if (charge > 0) {
           registryData.fill(HIST("mc/reconstruction/protons/pos/rec_proton_pos_all"), pt);
-          registryData.fill(HIST("mc/reconstruction/protons/pos/contamination_matrix_proton_pos"), pdg, pt);
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/protons/pos/rec_proton_pos_tof_matched"), pt);
+          }
+          registryData.fill(HIST("mc/reconstruction/protons/pos/contamination_matrix_proton_pos"), realpdg, pt);
+
+          registryData.fill(HIST("mc/reconstruction/protons/pos/rec_proton_pos_tpc"), pt, track.tpcNSigmaPr());
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/protons/pos/rec_proton_pos_tof"), pt, track.tofNSigmaPr());
+          }
         } else {
+
           registryData.fill(HIST("mc/reconstruction/protons/neg/rec_proton_neg_all"), pt);
-          registryData.fill(HIST("mc/reconstruction/protons/neg/contamination_matrix_proton_neg"), pdg, pt);
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/protons/neg/rec_proton_neg_tof_matched"), pt);
+          }
+          registryData.fill(HIST("mc/reconstruction/protons/neg/contamination_matrix_proton_neg"), realpdg, pt);
+
+          registryData.fill(HIST("mc/reconstruction/protons/neg/rec_proton_neg_tpc"), pt, track.tpcNSigmaPr());
+          if (track.hasTOF()) {
+            registryData.fill(HIST("mc/reconstruction/protons/neg/rec_proton_neg_tof"), pt, track.tofNSigmaPr());
+          }
         }
 
         if (isPrimary) {
@@ -1511,6 +1608,8 @@ struct JetHadronsPid {
       int originalPdg = mcpart.pdgCode();
       int pdg = std::abs(originalPdg);
       double pt = mcpart.pt();
+
+      registryData.fill(HIST("mc/truth/hadrons/mc_gen_hadron_pt"), pt);
 
       if (pdg == PDG_t::kPiPlus) {
         if (pt >= cfg.minPtPion && pt <= cfg.maxPtPion) {
