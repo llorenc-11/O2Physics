@@ -151,24 +151,65 @@ struct JetHadronsPid {
     AxisSpec axisMomentumTPCSignal{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"};
     AxisSpec axisTPCSignal{400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"};
 
-    registryData.add("data/pure/tpc_signal_vs_p", "TPC signal for inclusive selected tracks;" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumTPCSignal, axisTPCSignal});
-    registryData.add("data/jets/tpc_signal_vs_p", "TPC signal for tracks in selected jets;" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumTPCSignal, axisTPCSignal});
-    registryData.add("data/pure/after_pid/pion_tpc_signal_vs_p", "TPC signal after pion PID, inclusive tracks;" "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
-    registryData.add("data/pure/after_pid/kaon_tpc_signal_vs_p", "TPC signal after kaon PID, inclusive tracks;" "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F,{{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
-    registryData.add("data/pure/after_pid/proton_tpc_signal_vs_p", "TPC signal after proton PID, inclusive tracks;" "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
+    registryData.add("data/pure/tpc_signal_vs_p",
+                     "TPC signal for inclusive selected tracks;"
+                     "#it{p} (GeV/#it{c});"
+                     "TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {axisMomentumTPCSignal, axisTPCSignal});
+    registryData.add("data/jets/tpc_signal_vs_p",
+                     "TPC signal for tracks in selected jets;"
+                     "#it{p} (GeV/#it{c});"
+                     "TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {axisMomentumTPCSignal, axisTPCSignal});
+    registryData.add("data/pure/after_pid/pion_tpc_signal_vs_p",
+                     "TPC signal after pion PID, inclusive tracks;"
+                     "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
+    registryData.add("data/pure/after_pid/kaon_tpc_signal_vs_p",
+                     "TPC signal after kaon PID, inclusive tracks;"
+                     "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
+    registryData.add("data/pure/after_pid/proton_tpc_signal_vs_p",
+                     "TPC signal after proton PID, inclusive tracks;"
+                     "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
 
-    registryData.add("data/jets/after_pid/pion_tpc_signal_vs_p", "TPC signal after pion PID, tracks in jets;" "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
-    registryData.add("data/jets/after_pid/kaon_tpc_signal_vs_p", "TPC signal after kaon PID, tracks in jets;" "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
-    registryData.add("data/jets/after_pid/proton_tpc_signal_vs_p", "TPC signal after proton PID, tracks in jets;" "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
+    registryData.add("data/jets/after_pid/pion_tpc_signal_vs_p",
+                     "TPC signal after pion PID, tracks in jets;"
+                     "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
+    registryData.add("data/jets/after_pid/kaon_tpc_signal_vs_p",
+                     "TPC signal after kaon PID, tracks in jets;"
+                     "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
+    registryData.add("data/jets/after_pid/proton_tpc_signal_vs_p",
+                     "TPC signal after proton PID, tracks in jets;"
+                     "#it{p} (GeV/#it{c});TPC d#it{E}/d#it{x} signal (a.u.)",
+                     HistType::kTH2F, {{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"}, {400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"}});
 
     AxisSpec axisMomentumTOF{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"};
     AxisSpec axisTOFBeta{240, 0.0, 1.2, "#beta_{TOF}"};
 
-    registryData.add("data/pure/tof_beta_vs_p", "TOF #beta for inclusive selected tracks;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
-    registryData.add("data/jets/tof_beta_vs_p", "TOF #beta for tracks in selected jets;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
-    registryData.add("data/pure/after_pid/pion_tof_beta_vs_p", "TOF #beta after pion PID, inclusive tracks;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
-    registryData.add("data/pure/after_pid/kaon_tof_beta_vs_p", "TOF #beta after kaon PID, inclusive tracks;" "#it{p} (GeV/#it{c});#beta_{TOF}",  HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
-    registryData.add("data/pure/after_pid/proton_tof_beta_vs_p", "TOF #beta after proton PID, inclusive tracks;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/pure/tof_beta_vs_p",
+                     "TOF #beta for inclusive selected tracks;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/jets/tof_beta_vs_p",
+                     "TOF #beta for tracks in selected jets;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/pure/after_pid/pion_tof_beta_vs_p",
+                     "TOF #beta after pion PID, inclusive tracks;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/pure/after_pid/kaon_tof_beta_vs_p",
+                     "TOF #beta after kaon PID, inclusive tracks;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/pure/after_pid/proton_tof_beta_vs_p",
+                     "TOF #beta after proton PID, inclusive tracks;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
 
     // Pions
     registryData.add("data/pure/pions/pion_pure_tpc", "TPC Pion PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
@@ -284,9 +325,18 @@ struct JetHadronsPid {
     hTrackTotals->GetXaxis()->SetBinLabel(1, "Pure tracks");
     hTrackTotals->GetXaxis()->SetBinLabel(2, "Tracks in jets");
 
-    registryData.add("data/jets/after_pid/pion_tof_beta_vs_p", "TOF #beta after pion PID, tracks in jets;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
-    registryData.add("data/jets/after_pid/kaon_tof_beta_vs_p", "TOF #beta after kaon PID, tracks in jets;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
-    registryData.add("data/jets/after_pid/proton_tof_beta_vs_p", "TOF #beta after proton PID, tracks in jets;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/jets/after_pid/pion_tof_beta_vs_p",
+                     "TOF #beta after pion PID, tracks in jets;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/jets/after_pid/kaon_tof_beta_vs_p",
+                     "TOF #beta after kaon PID, tracks in jets;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
+    registryData.add("data/jets/after_pid/proton_tof_beta_vs_p",
+                     "TOF #beta after proton PID, tracks in jets;"
+                     "#it{p} (GeV/#it{c});#beta_{TOF}",
+                     HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
 
     // Jet Cone
 
@@ -342,7 +392,10 @@ struct JetHadronsPid {
     hComposition->SetStats(false);
 
     // Pions
-    registryData.add("data/jets/n_pions_vs_n_constituents", "Pions vs selected constituents;" "N_{constituents}^{selected};N_{#pi}", HistType::kTH2I, {{31, -0.5, 30.5, "N_{constituents}^{selected}"}, {31, -0.5, 30.5, "N_{#pi^{+}+#pi^{-}}"}});
+    registryData.add("data/jets/n_pions_vs_n_constituents",
+                     "Pions vs selected constituents;"
+                     "N_{constituents}^{selected};N_{#pi}",
+                     HistType::kTH2I, {{31, -0.5, 30.5, "N_{constituents}^{selected}"}, {31, -0.5, 30.5, "N_{#pi^{+}+#pi^{-}}"}});
     registryData.add("data/jets/pions/pos/pion_jet_pos_tpc", "TPC #pi^{+} PID in Jets", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
     registryData.add("data/jets/pions/pos/pion_jet_pos_tof", "TOF #pi^{+} PID in Jets", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
     registryData.add("data/jets/pions/pos/pion_jet_pos_pt", "#pi^{+} pT in Jets", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
@@ -853,7 +906,10 @@ struct JetHadronsPid {
         registryData.fill(HIST("data/pure/pions/pion_pure_tpc"), pt, track.tpcNSigmaPi());
         registryData.fill(HIST("data/pure/pions/pion_pure_eta_phi"), phi, eta);
         if (track.hasTOF()) {
-          registryData.fill(HIST("data/pure/after_pid/pion_tof_beta_vs_p"), p, track.beta());
+          registryData.fill(
+            HIST("data/pure/after_pid/pion_tof_beta_vs_p"),
+            p,
+            track.beta());
           registryData.fill(HIST("data/pure/pions/pion_pure_tof"), pt, track.tofNSigmaPi());
         }
         registryData.fill(HIST("data/pure/pions/pion_pure_pt"), pt);
@@ -893,7 +949,10 @@ struct JetHadronsPid {
         registryData.fill(HIST("data/pure/kaons/kaon_pure_tpc"), pt, track.tpcNSigmaKa());
         registryData.fill(HIST("data/pure/kaons/kaon_pure_eta_phi"), phi, eta);
         if (track.hasTOF()) {
-          registryData.fill(HIST("data/pure/after_pid/kaon_tof_beta_vs_p"), p, track.beta());
+          registryData.fill(
+            HIST("data/pure/after_pid/kaon_tof_beta_vs_p"),
+            p,
+            track.beta());
           registryData.fill(HIST("data/pure/kaons/kaon_pure_tof"), pt, track.tofNSigmaKa());
         }
         registryData.fill(HIST("data/pure/kaons/kaon_pure_pt"), pt);
@@ -933,7 +992,10 @@ struct JetHadronsPid {
         registryData.fill(HIST("data/pure/protons/proton_pure_tpc"), pt, track.tpcNSigmaPr());
         registryData.fill(HIST("data/pure/protons/proton_pure_eta_phi"), phi, eta);
         if (track.hasTOF()) {
-          registryData.fill(HIST("data/pure/after_pid/proton_tof_beta_vs_p"), p, track.beta());
+          registryData.fill(
+            HIST("data/pure/after_pid/proton_tof_beta_vs_p"),
+            p,
+            track.beta());
           registryData.fill(HIST("data/pure/protons/proton_pure_tof"), pt, track.tofNSigmaPr());
         }
         registryData.fill(HIST("data/pure/protons/proton_pure_pt"), pt);
@@ -1093,7 +1155,11 @@ struct JetHadronsPid {
         if (pid.isPion) {
           registryData.fill(HIST("data/jets/after_pid/pion_tpc_signal_vs_p"), track.p(), track.tpcSignal());
 
-          if (track.hasTOF()) {registryData.fill(HIST("data/jets/after_pid/pion_tof_beta_vs_p"), p, track.beta());
+          if (track.hasTOF()) {
+            registryData.fill(
+              HIST("data/jets/after_pid/pion_tof_beta_vs_p"),
+              p,
+              track.beta());
           }
 
           if (charge > 0) {
@@ -1132,7 +1198,10 @@ struct JetHadronsPid {
           registryData.fill(HIST("data/jets/after_pid/kaon_tpc_signal_vs_p"), track.p(), track.tpcSignal());
 
           if (track.hasTOF()) {
-            registryData.fill(HIST("data/jets/after_pid/kaon_tof_beta_vs_p"), p, track.beta());
+            registryData.fill(
+              HIST("data/jets/after_pid/kaon_tof_beta_vs_p"),
+              p,
+              track.beta());
           }
           if (charge > 0) {
             nKaonsInJetPos++;
