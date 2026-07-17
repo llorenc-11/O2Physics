@@ -61,6 +61,10 @@ using StandardEvents = soa::Join<aod::Collisions, aod::EvSels, aod::CentFT0Ms>;
 
 using JetEvents = soa::Join<aod::JetCollisions, aod::BkgChargedRhos, aod::JCollisionPIs>;
 
+using MCDJetEvents = soa::Join<aod::JetCollisions, aod::JCollisionPIs>;
+
+using ChargedMCDJets = soa::Join<aod::ChargedMCDetectorLevelJets, aod::ChargedMCDetectorLevelJetConstituents>;
+
 using HadronTracks = soa::Join<aod::Tracks, aod::TracksExtra, aod::TrackSelection, aod::TrackSelectionExtension, aod::TracksDCA,
                                aod::pidTPCFullPi, aod::pidTOFFullPi,
                                aod::pidTPCFullKa, aod::pidTOFFullKa,
@@ -115,6 +119,7 @@ struct JetHadronsPid {
   o2::aod::ITSResponse itsResponse;
 
   Preslice<HadronTracks> tracksPerCollision = aod::track::collisionId;
+  Preslice<HadronTracksMC> mcTracksPerCollision = aod::track::collisionId;
 
   struct : ConfigurableGroup {
     Configurable<int> pidMethod{"pidMethod", 2, "Variable for choosing pid method"};
@@ -510,11 +515,24 @@ struct JetHadronsPid {
     registryData.add("data/ue/tracks_n_in_ue", "Number of tracks in UE", HistType::kTH1I, {{100, 0, 100, "N_{tracks}"}});
 
     //////////////////////////////////////////////
-    //                    MC
-    //              RECONSTRUCTION
+    //             MC RECONSTRUCTION
     //////////////////////////////////////////////
 
     registryData.add("mc/n_events", "Event counter", HistType::kTH1F, {{1, 0.5, 1.5, "N_{events}"}});
+
+    AxisSpec axisMomentumMC{300, 0.05, 30.0, "#it{p} (GeV/#it{c})"};
+    AxisSpec axisTPCSignalMC{400, 20.0, 2000.0, "TPC d#it{E}/d#it{x} signal (a.u.)"};
+    AxisSpec axisTOFBetaMC{240, 0.0, 1.2, "#beta_{TOF}"};
+
+    registryData.add("mc/reconstruction/pid/tpc_signal_vs_p", "Reconstructed MC tracks;" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumMC, axisTPCSignalMC});
+    registryData.add("mc/reconstruction/pid/tof_beta_vs_p", "Reconstructed MC tracks with TOF;" "#it{p} (GeV/#it{c});" "#beta_{TOF}", HistType::kTH2F, {axisMomentumMC, axisTOFBetaMC});
+
+    registryData.add("mc/reconstruction/pid/true_pions/tpc_signal_vs_p", "True reconstructed #pi^{#pm};" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumMC, axisTPCSignalMC});
+    registryData.add("mc/reconstruction/pid/true_kaons/tpc_signal_vs_p", "True reconstructed K^{#pm};" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumMC, axisTPCSignalMC});
+    registryData.add("mc/reconstruction/pid/true_protons/tpc_signal_vs_p", "True reconstructed p/#bar{p};" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumMC, axisTPCSignalMC});
+    registryData.add("mc/reconstruction/pid/true_pions/tof_beta_vs_p", "True reconstructed #pi^{#pm} with TOF;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumMC, axisTOFBetaMC});
+    registryData.add("mc/reconstruction/pid/true_kaons/tof_beta_vs_p", "True reconstructed K^{#pm} with TOF;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumMC, axisTOFBetaMC});
+    registryData.add("mc/reconstruction/pid/true_protons/tof_beta_vs_p", "True reconstructed p/#bar{p} with TOF;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumMC, axisTOFBetaMC});
 
     registryData.add("mc/reconstruction/pions/rec_pion_all", "All Tracks PID'd as Pions", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/pions/mc_rec_pion_pt", "True Primary Pions (Reconstructed)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
@@ -576,8 +594,7 @@ struct JetHadronsPid {
     registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_tpc", "MC TPC #bar{p} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TPC}"}});
     registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_tof", "MC TOF #bar{p} PID", HistType::kTH2F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}, {200, -3.0, 3.0, "n#sigma_{TOF}"}});
     //////////////////////////////////////////////
-    //                    MC
-    //                   TRUTH
+    //                 MC TRUTH
     //////////////////////////////////////////////
 
     registryData.add("mc/truth/pions/mc_gen_pion_pt", "Generated Primary Pions (Truth)", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
@@ -606,6 +623,75 @@ struct JetHadronsPid {
 
     registryData.add("mc/reconstruction/protons/pos/rec_proton_pos_tof_matched", "MC TOF Matched p", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
     registryData.add("mc/reconstruction/protons/neg/rec_proton_neg_tof_matched", "MC TOF Matched #bar{p}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+  
+    //////////////////////////////////////////////
+    //       MC DETECTOR-LEVEL JETS
+    //////////////////////////////////////////////
+
+    registryData.add("mc/jets/detector/n_events", "Selected MCD jet events;event;N_{events}", HistType::kTH1I, {{1, 0.5, 1.5, "event"}});
+    registryData.add("mc/jets/detector/jet_pt", "Detector-level charged jets;#it{p}_{T,jet}^{det} (GeV/#it{c});N_{jets}", HistType::kTH1F, {{200, 0.0, 100.0, "#it{p}_{T,jet}^{det} (GeV/#it{c})"}});
+    registryData.add("mc/jets/detector/jet_eta", "Detector-level charged jets;#eta_{jet}^{det};N_{jets}", HistType::kTH1F, {{100, -1.0, 1.0, "#eta_{jet}^{det}"}});
+    registryData.add("mc/jets/detector/jet_phi", "Detector-level charged jets;#varphi_{jet}^{det};N_{jets}", HistType::kTH1F, {{72, 0.0, TwoPI, "#varphi_{jet}^{det}"}});
+    registryData.add("mc/jets/detector/jet_n_constituents", "Detector-level charged jets;N_{constituents}^{det};N_{jets}", HistType::kTH1I, {{101, -0.5, 100.5, "N_{constituents}^{det}"}});
+    registryData.add("mc/jets/detector/jet_area", "Detector-level charged jets;A_{jet}^{det};N_{jets}", HistType::kTH1F, {{100, 0.0, 1.5, "A_{jet}^{det}"}});
+    registryData.add("mc/jets/detector/jet_n_selected_constituents", "Selected detector-level jet constituents;N_{constituents}^{selected};N_{jets}", HistType::kTH1I, {{101, -0.5, 100.5, "N_{constituents}^{selected}"}});
+
+    //////////////////////////////////////////////
+    //            MCD JET CONE
+    //////////////////////////////////////////////
+
+    AxisSpec axisMCDDeltaEtaCone{80, -static_cast<double>(rJet), static_cast<double>(rJet), "#Delta#eta = #eta_{track} - #eta_{axis}"};
+    AxisSpec axisMCDDeltaPhiCone{80, -static_cast<double>(rJet), static_cast<double>(rJet), "#Delta#varphi = #varphi_{track} - #varphi_{axis}"};
+    AxisSpec axisMCDPtTrackCone{100, 0.0, 10.0, "#it{p}_{T}^{track} (GeV/#it{c})"};
+    AxisSpec axisMCDMultiplicity{31, -0.5, 30.5, "N per jet"};
+    AxisSpec axisMCDNPions{21, -0.5, 20.5, "N_{#pi} per jet"};
+    AxisSpec axisMCDNKaons{11, -0.5, 10.5, "N_{K} per jet"};
+    AxisSpec axisMCDNProtons{11, -0.5, 10.5, "N_{p} per jet"};
+
+    registryData.add("mc/jets/detector/cone/all_tracks_2d", "Selected tracks in MCD jet cone;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+    registryData.add("mc/jets/detector/cone/pions_2d", "Reconstructed #pi in MCD jet cone;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+    registryData.add("mc/jets/detector/cone/kaons_2d", "Reconstructed K in MCD jet cone;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+    registryData.add("mc/jets/detector/cone/protons_2d", "Reconstructed p/#bar{p} in MCD jet cone;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+
+    registryData.add("mc/jets/detector/cone/all_tracks_3d", "Selected tracks in MCD jet cone;#Delta#eta;#Delta#varphi;#it{p}_{T}^{track} (GeV/#it{c})", HistType::kTH3F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone, axisMCDPtTrackCone});
+    registryData.add("mc/jets/detector/cone/pions_3d", "Reconstructed #pi in MCD jet cone;#Delta#eta;#Delta#varphi;#it{p}_{T}^{track} (GeV/#it{c})", HistType::kTH3F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone, axisMCDPtTrackCone});
+    registryData.add("mc/jets/detector/cone/kaons_3d", "Reconstructed K in MCD jet cone;#Delta#eta;#Delta#varphi;#it{p}_{T}^{track} (GeV/#it{c})", HistType::kTH3F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone, axisMCDPtTrackCone});
+    registryData.add("mc/jets/detector/cone/protons_3d", "Reconstructed p/#bar{p} in MCD jet cone;#Delta#eta;#Delta#varphi;#it{p}_{T}^{track} (GeV/#it{c})", HistType::kTH3F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone, axisMCDPtTrackCone});
+
+    //////////////////////////////////////////////
+    //        MCD JET COMPOSITION
+    //////////////////////////////////////////////
+
+    registryData.add("mc/jets/detector/composition/n_pions_per_jet", "Reconstructed #pi per MCD jet;N_{#pi};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+    registryData.add("mc/jets/detector/composition/n_kaons_per_jet", "Reconstructed K per MCD jet;N_{K};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+    registryData.add("mc/jets/detector/composition/n_protons_per_jet", "Reconstructed p/#bar{p} per MCD jet;N_{p+#bar{p}};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+
+    registryData.add("mc/jets/detector/composition/n_pions_vs_n_kaons", "Reconstructed MCD composition;N_{#pi};N_{K};N_{jets}", HistType::kTH2I, {axisMCDNPions, axisMCDNKaons});
+    registryData.add("mc/jets/detector/composition/n_pions_vs_n_protons", "Reconstructed MCD composition;N_{#pi};N_{p};N_{jets}", HistType::kTH2I, {axisMCDNPions, axisMCDNProtons});
+    registryData.add("mc/jets/detector/composition/n_kaons_vs_n_protons", "Reconstructed MCD composition;N_{K};N_{p};N_{jets}", HistType::kTH2I, {axisMCDNKaons, axisMCDNProtons});
+    registryData.add("mc/jets/detector/composition/n_pions_n_kaons_n_protons", "Reconstructed MCD jet composition;N_{#pi};N_{K};N_{p}", HistType::kTH3F, {axisMCDNPions, axisMCDNKaons, axisMCDNProtons});
+
+    registryData.add("mc/jets/detector/pid/pion_pt", "Reconstructed #pi in MCD jets;#it{p}_{T} (GeV/#it{c});N_{tracks}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/jets/detector/pid/kaon_pt", "Reconstructed K in MCD jets;#it{p}_{T} (GeV/#it{c});N_{tracks}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/jets/detector/pid/proton_pt", "Reconstructed p/#bar{p} in MCD jets;#it{p}_{T} (GeV/#it{c});N_{tracks}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+
+    //////////////////////////////////////////////
+    //              MCD UE
+    //////////////////////////////////////////////
+
+    registryData.add("mc/jets/detector/ue/all_tracks_2d", "Selected tracks in MCD perpendicular cones;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+    registryData.add("mc/jets/detector/ue/pions_2d", "Reconstructed #pi in MCD perpendicular cones;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+    registryData.add("mc/jets/detector/ue/kaons_2d", "Reconstructed K in MCD perpendicular cones;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+    registryData.add("mc/jets/detector/ue/protons_2d", "Reconstructed p/#bar{p} in MCD perpendicular cones;#Delta#eta;#Delta#varphi", HistType::kTH2F, {axisMCDDeltaEtaCone, axisMCDDeltaPhiCone});
+
+    registryData.add("mc/jets/detector/ue/n_tracks_per_jet", "Selected tracks in both MCD perpendicular cones;N_{tracks}^{UE1+UE2};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+    registryData.add("mc/jets/detector/ue/n_pions_per_jet", "Reconstructed #pi in both MCD perpendicular cones;N_{#pi}^{UE1+UE2};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+    registryData.add("mc/jets/detector/ue/n_kaons_per_jet", "Reconstructed K in both MCD perpendicular cones;N_{K}^{UE1+UE2};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+    registryData.add("mc/jets/detector/ue/n_protons_per_jet", "Reconstructed p/#bar{p} in both MCD perpendicular cones;N_{p+#bar{p}}^{UE1+UE2};N_{jets}", HistType::kTH1I, {axisMCDMultiplicity});
+
+    registryData.add("mc/jets/detector/ue/pion_pt", "Reconstructed #pi in MCD perpendicular cones;#it{p}_{T} (GeV/#it{c});N_{tracks}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/jets/detector/ue/kaon_pt", "Reconstructed K in MCD perpendicular cones;#it{p}_{T} (GeV/#it{c});N_{tracks}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});
+    registryData.add("mc/jets/detector/ue/proton_pt", "Reconstructed p/#bar{p} in MCD perpendicular cones;#it{p}_{T} (GeV/#it{c});N_{tracks}", HistType::kTH1F, {{120, 0.0, 4.0, "#it{p}_{T} (GeV/#it{c})"}});  
   }
 
   void getPerpendicularDirections(const TVector3& p, TVector3& u1, TVector3& u2)
@@ -1378,6 +1464,183 @@ struct JetHadronsPid {
   }
   PROCESS_SWITCH(JetHadronsPid, processJets, "Jets Analysis", true);
 
+  void processJetsMCD(MCDJetEvents::iterator const& collision, aod::JetMcCollisions const&, ChargedMCDJets const& detectorLevelJets, soa::Join<aod::JetTracks, aod::JTrackPIs> const&, HadronTracksMC const& globalTracks)
+    {
+      if (!jetderiveddatautilities::selectCollision(
+            collision,
+            eventSelectionBits)) {
+        return;
+      }
+
+      if (std::abs(collision.posZ()) > zVtx) {
+        return;
+      }
+
+      const int selectedR = static_cast<int>(std::lround(rJet * 100.0));
+      auto collTracks = globalTracks.sliceBy(mcTracksPerCollision, collision.collisionId());
+
+      registryData.fill(HIST("mc/jets/detector/n_events"), 1);
+
+      for (auto const& jet : detectorLevelJets) {
+
+        if (jet.r() != selectedR) {
+          continue;
+        }
+
+        if (!isppRefAnalysis && ((std::abs(jet.eta()) + rJet) > (maxEta - deltaEtaEdge))) {
+          continue;
+        }
+
+        if (isppRefAnalysis && std::abs(jet.eta()) > cfgEtaJetMax) {
+          continue;
+        }
+
+        if (jet.pt() < minJetPt || jet.pt() > maxJetPt) {
+          continue;
+        }
+
+        double normalizedJetArea = jet.area() / (PI * rJet * rJet);
+
+        if (applyAreaCut && normalizedJetArea < minNormalizedJetArea) {
+          continue;
+        }
+        registryData.fill(HIST("mc/jets/detector/jet_pt"), jet.pt());
+
+        registryData.fill(HIST("mc/jets/detector/jet_eta"), jet.eta());
+        registryData.fill(HIST("mc/jets/detector/jet_phi"), jet.phi());
+        registryData.fill(HIST("mc/jets/detector/jet_area"), jet.area());
+        registryData.fill(HIST("mc/jets/detector/jet_n_constituents"), static_cast<double>(jet.tracksIds().size()));
+
+        TVector3 jetAxis(jet.px(), jet.py(), jet.pz());
+        TVector3 ueAxis1(0, 0, 0);
+        TVector3 ueAxis2(0, 0, 0);
+
+        getPerpendicularDirections(jetAxis, ueAxis1, ueAxis2);
+
+        int nSelectedConstituents = 0;
+
+        int nPionsInJet = 0;
+        int nKaonsInJet = 0;
+        int nProtonsInJet = 0;
+
+        for (auto const& jtrack : jet.tracks_as< soa::Join<aod::JetTracks, aod::JTrackPIs>>()) {
+          auto track = jtrack.track_as<HadronTracksMC>();
+          if (!passedTrackSelection(track)) {continue;}
+
+          ++nSelectedConstituents;
+
+          const double deltaEtaJet = track.eta() - jet.eta();
+          const double deltaPhiJet = RecoDecay::constrainAngle(track.phi() - jet.phi(), -PI);
+          const double pt = track.pt();
+
+          registryData.fill(HIST("mc/jets/detector/cone/all_tracks_2d"), deltaEtaJet, deltaPhiJet);
+          registryData.fill(HIST("mc/jets/detector/cone/all_tracks_3d"), deltaEtaJet, deltaPhiJet, pt);
+
+          PidResult pid = getPid(track);
+
+          if (pid.isPion) {
+            ++nPionsInJet;
+
+            registryData.fill(HIST("mc/jets/detector/cone/pions_2d"), deltaEtaJet, deltaPhiJet);
+            registryData.fill(HIST("mc/jets/detector/cone/pions_3d"), deltaEtaJet, deltaPhiJet, pt);
+            registryData.fill(HIST("mc/jets/detector/pid/pion_pt"), pt);
+
+          } else if (pid.isKaon) {
+            ++nKaonsInJet;
+
+            registryData.fill(HIST("mc/jets/detector/cone/kaons_2d"), deltaEtaJet, deltaPhiJet);
+            registryData.fill(HIST("mc/jets/detector/cone/kaons_3d"), deltaEtaJet, deltaPhiJet, pt);
+            registryData.fill(HIST("mc/jets/detector/pid/kaon_pt"), pt);
+
+          } else if (pid.isProton) {
+            ++nProtonsInJet;
+
+            registryData.fill(HIST("mc/jets/detector/cone/protons_2d"), deltaEtaJet, deltaPhiJet);
+            registryData.fill(HIST("mc/jets/detector/cone/protons_3d"), deltaEtaJet, deltaPhiJet, pt);
+            registryData.fill(HIST("mc/jets/detector/pid/proton_pt"), pt);
+          }
+        }
+
+        registryData.fill(HIST("mc/jets/detector/jet_n_selected_constituents"), nSelectedConstituents);
+        
+        if (nPionsInJet > 0) {
+          registryData.fill(HIST("mc/jets/detector/composition/n_pions_per_jet"), nPionsInJet);
+        }
+
+        if (nKaonsInJet > 0) {
+          registryData.fill(HIST("mc/jets/detector/composition/n_kaons_per_jet"), nKaonsInJet);
+        }
+
+        if (nProtonsInJet > 0) {
+          registryData.fill(HIST("mc/jets/detector/composition/n_protons_per_jet"), nProtonsInJet);
+        }
+
+        registryData.fill(HIST("mc/jets/detector/composition/n_pions_vs_n_kaons"), nPionsInJet, nKaonsInJet);
+        registryData.fill(HIST("mc/jets/detector/composition/n_pions_vs_n_protons"), nPionsInJet, nProtonsInJet);
+        registryData.fill(HIST("mc/jets/detector/composition/n_kaons_vs_n_protons"), nKaonsInJet, nProtonsInJet);
+        registryData.fill(HIST("mc/jets/detector/composition/n_pions_n_kaons_n_protons"),nPionsInJet, nKaonsInJet, nProtonsInJet);
+
+        int nTracksInUe = 0;
+        int nPionsInUe = 0;
+        int nKaonsInUe = 0;
+        int nProtonsInUe = 0;
+
+        for (auto const& track : collTracks) {
+          if (!passedTrackSelection(track)) {continue;}
+
+          const double deltaEtaUe1 = track.eta() - ueAxis1.Eta();
+          const double deltaPhiUe1 = RecoDecay::constrainAngle(track.phi() - ueAxis1.Phi(), -PI);
+          const double deltaRUe1 = std::hypot(deltaEtaUe1, deltaPhiUe1);
+
+          const double deltaEtaUe2 = track.eta() - ueAxis2.Eta();
+          const double deltaPhiUe2 = RecoDecay::constrainAngle(track.phi() - ueAxis2.Phi(), -PI);
+          const double deltaRUe2 = std::hypot(deltaEtaUe2, deltaPhiUe2);
+
+          const bool inUe1 = deltaRUe1 <= rJet;
+          const bool inUe2 = deltaRUe2 <= rJet;
+
+          if (!inUe1 && !inUe2) {continue;}
+
+          const bool useUe1 = inUe1 && (!inUe2 || deltaRUe1 <= deltaRUe2);
+          const double deltaEtaUe = useUe1 ? deltaEtaUe1 : deltaEtaUe2;
+          const double deltaPhiUe = useUe1 ? deltaPhiUe1 : deltaPhiUe2;
+          const double pt = track.pt();
+
+          ++nTracksInUe;
+
+          registryData.fill(HIST("mc/jets/detector/ue/all_tracks_2d"), deltaEtaUe, deltaPhiUe);
+
+          PidResult pid = getPid(track);
+
+          if (pid.isPion) {
+            ++nPionsInUe;
+
+            registryData.fill(HIST("mc/jets/detector/ue/pions_2d"), deltaEtaUe, deltaPhiUe);
+            registryData.fill(HIST("mc/jets/detector/ue/pion_pt"), pt);
+
+          } else if (pid.isKaon) {
+            ++nKaonsInUe;
+
+            registryData.fill(HIST("mc/jets/detector/ue/kaons_2d"), deltaEtaUe, deltaPhiUe);
+            registryData.fill(HIST("mc/jets/detector/ue/kaon_pt"), pt);
+
+          } else if (pid.isProton) {
+            ++nProtonsInUe;
+
+            registryData.fill(HIST("mc/jets/detector/ue/protons_2d"), deltaEtaUe, deltaPhiUe);
+            registryData.fill(HIST("mc/jets/detector/ue/proton_pt"), pt);
+          }
+        }
+        registryData.fill(HIST("mc/jets/detector/ue/n_tracks_per_jet"), nTracksInUe);
+        registryData.fill(HIST("mc/jets/detector/ue/n_pions_per_jet"), nPionsInUe);
+        registryData.fill(HIST("mc/jets/detector/ue/n_kaons_per_jet"), nKaonsInUe);
+        registryData.fill(HIST("mc/jets/detector/ue/n_protons_per_jet"), nProtonsInUe);
+      }
+    }
+
+  PROCESS_SWITCH(JetHadronsPid, processJetsMCD, "Detector-level charged jets in MC", false);
+
+
   void processMC(StandardEvents::iterator const& collision, HadronTracksMC const& tracks, aod::McParticles const&)
   {
     if (!collision.sel8() || std::abs(collision.posZ()) > zVtx) {
@@ -1410,14 +1673,45 @@ struct JetHadronsPid {
         continue;
       }
 
+      const double p = track.p();
+      registryData.fill(HIST("mc/reconstruction/pid/tpc_signal_vs_p"), p, track.tpcSignal());
+
+      if (track.hasTOF()) {
+        registryData.fill(HIST("mc/reconstruction/pid/tof_beta_vs_p"), p, track.beta());
+      }
+
       double pt = track.pt();
 
       if (!track.has_mcParticle()) {
         continue;
       }
       auto const& trueParticle = track.mcParticle();
-
       int pdg = std::abs(trueParticle.pdgCode());
+
+      if (pdg == PDG_t::kPiPlus) {
+        registryData.fill(HIST("mc/reconstruction/pid/true_pions/tpc_signal_vs_p"), p,track.tpcSignal());
+
+        if (track.hasTOF()) {
+          registryData.fill(HIST("mc/reconstruction/pid/true_pions/tof_beta_vs_p"), p, track.beta());
+        }
+      }
+
+      if (pdg == PDG_t::kKPlus) {
+        registryData.fill(
+          HIST("mc/reconstruction/pid/true_kaons/tpc_signal_vs_p"), p, track.tpcSignal());
+        if (track.hasTOF()) {
+          registryData.fill(HIST("mc/reconstruction/pid/true_kaons/tof_beta_vs_p"), p, track.beta());
+        }
+      }
+
+      if (pdg == PDG_t::kProton) {
+        registryData.fill(HIST("mc/reconstruction/pid/true_protons/tpc_signal_vs_p"), p, track.tpcSignal());
+
+        if (track.hasTOF()) {
+          registryData.fill(HIST("mc/reconstruction/pid/true_protons/tof_beta_vs_p"), p, track.beta());
+        }
+      }
+
       int realpdg = trueParticle.pdgCode();
       bool isPrimary = trueParticle.isPhysicalPrimary();
       int charge = track.sign();
