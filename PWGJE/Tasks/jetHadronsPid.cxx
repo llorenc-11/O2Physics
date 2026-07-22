@@ -175,17 +175,6 @@ struct JetHadronsPid {
     AxisSpec axisTruthPhi{72, 0.0, TwoPI, "#varphi"};
     AxisSpec axisTruthMultiplicity{201, -0.5, 200.5, "N_{particles}"};
 
-    auto hTrackTotals = registryData.get<TH1>(HIST("data/jets/total_tracks_pure_vs_jets"));
-    hTrackTotals->GetXaxis()->SetBinLabel(1, "Pure tracks");
-    hTrackTotals->GetXaxis()->SetBinLabel(2, "Tracks in jets");
-
-    auto hComposition = registryData.get<TH2>(HIST("data/jets/composition/particle_multiplicity_per_jet"));
-    hComposition->GetXaxis()->SetBinLabel(1, "#pi");
-    hComposition->GetXaxis()->SetBinLabel(2, "K");
-    hComposition->GetXaxis()->SetBinLabel(3, "p");
-    hComposition->SetOption("COLZ");
-    hComposition->SetStats(false);
-
     //////////////////////////////////////////////
     //                   PURE
     //////////////////////////////////////////////
@@ -307,7 +296,6 @@ struct JetHadronsPid {
     registryData.add("data/jets/jet_area", "Jet area", HistType::kTH1F, {{100, 0.0, 1.5, "Area"}});
     registryData.add("data/jets/jet_n_constituents", "Jet multiplicity", HistType::kTH1I, {{100, 0, 30, "N_{constituents}"}});
     registryData.add("data/jets/z_vtx", "Z-Vertex Distribution", HistType::kTH1F, {{200, -20.0, 20.0, "Z-Vertex (cm)"}});
-    registryData.add("data/jets/total_tracks_pure_vs_jets", "Selected tracks and tracks used in jets;Track category;N_{tracks}", HistType::kTH1F, {{2, 0.5, 2.5, "Track category"}});
     registryData.add("data/jets/tpc_signal_vs_p", "TPC signal for tracks in selected jets;" "#it{p} (GeV/#it{c});" "TPC d#it{E}/d#it{x} signal (a.u.)", HistType::kTH2F, {axisMomentumTPCSignal, axisTPCSignal});
     registryData.add("data/jets/tof_beta_vs_p", "TOF #beta for tracks in selected jets;" "#it{p} (GeV/#it{c});#beta_{TOF}", HistType::kTH2F, {axisMomentumTOF, axisTOFBeta});
     
@@ -336,6 +324,13 @@ struct JetHadronsPid {
     registryData.add("data/jets/kaons/neg/n_kaons_per_jet", "Multiplicity of PID-selected K^{-} candidates in selected jets;N_{K^{-}};N_{jets}", HistType::kTH1I, {axisMultiplicity});
     registryData.add("data/jets/protons/neg/n_protons_per_jet", "Multiplicity of PID-selected antiprotons in selected jets;N_{#bar{p}};N_{jets}", HistType::kTH1I, {axisMultiplicity});
     registryData.add("data/jets/composition/particle_multiplicity_per_jet", "Identified-particle multiplicity in selected jets;Particle species;N_{particles} per jet", HistType::kTH2I, {{3, 0.5, 3.5, "Particle species"}, {31, -0.5, 30.5, "N_{particles} per jet"}});
+
+    auto hComposition = registryData.get<TH2>(HIST("data/jets/composition/particle_multiplicity_per_jet"));
+    hComposition->GetXaxis()->SetBinLabel(1, "#pi");
+    hComposition->GetXaxis()->SetBinLabel(2, "K");
+    hComposition->GetXaxis()->SetBinLabel(3, "p");
+    hComposition->SetOption("COLZ");
+    hComposition->SetStats(false);
 
     registryData.add("data/jets/composition/nKaons_vs_nProtons", "Particle multiplicity correlation;N_{K};N_{p};N_{jets}", HistType::kTH2F, {axisNKaons, axisNProtons});
     registryData.add("data/jets/composition/nPions_vs_nKaons", "Particle multiplicity correlation;N_{#pi};N_{K};N_{jets}", HistType::kTH2F, {axisNPions, axisNKaons});
@@ -1126,7 +1121,6 @@ struct JetHadronsPid {
         }
       }
     }
-    registryData.fill(HIST("data/jets/total_tracks_pure_vs_jets"), 1.0, static_cast<double>(nSelectedTracks));
   }
   PROCESS_SWITCH(JetHadronsPid, processPureTracks, "Pure Tracks Analysis", true);
 
@@ -1547,15 +1541,13 @@ struct JetHadronsPid {
       }
       registryData.fill(HIST("data/ue/tracks_n_in_ue"), nTracksOut);
     }
-    registryData.fill(HIST("data/jets/total_tracks_pure_vs_jets"), 2.0, static_cast<double>(tracksInJetsCollision));
     registryData.fill(HIST("data/jets/collision_multiplicity"), jetsInCollision);
   }
   PROCESS_SWITCH(JetHadronsPid, processJets, "Jets Analysis", true);
 
   void processJetsMCD(MCDJetEvents::iterator const& collision, aod::JetMcCollisions const&, ChargedMCDJets const& detectorLevelJets, soa::Join<aod::JetTracks, aod::JTrackPIs> const&, HadronTracksMC const& globalTracks, aod::McParticles const& mcParticles)
 {
-  if (!jetderiveddatautilities::selectCollision(
-        collision, eventSelectionBits)) {
+  if (!jetderiveddatautilities::selectCollision(collision, eventSelectionBits)) {
     return;
   }
 
