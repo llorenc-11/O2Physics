@@ -112,8 +112,10 @@ struct JetHadronsPid {
   Configurable<double> maxPt{"maxPt", 4.0, "maximum pt of the tracks for PID analysis"};
   Configurable<double> minEta{"minEta", -0.8, "minimum eta"};
   Configurable<double> maxEta{"maxEta", +0.8, "maximum eta"};
-  Configurable<double> maxDcaxy{"maxDcaxy", 0.2, "Maximum DCAxy"};
-  Configurable<double> maxDcaz{"maxDcaz", 0.1, "Maximum DCAz"};
+  Configurable<double> maxDcaxy{"maxDcaxy", 0.004, "constant term of the DCAxy cut -> |DCAxy| < maxDcaxy + dcaXyPtPart/pT, in cm"};
+  Configurable<double> maxDcaz{"maxDcaz", 0.004, "constant term of the DCAz cut -> |DCAz| < maxDcaz + dcaZPtPart/pT, in cm"};
+  Configurable<double> dcaXyPtPart{"dcaXyPtPart", 0.013, "pt-dependent term of the DCAxy cut -> |DCAxy| < maxDcaxy + dcaXyPtPart/pT, in cm GeV/c; 0 keeps the cut flat"};
+  Configurable<double> dcaZPtPart{"dcaZPtPart", 0.013, "pt-dependent term of the DCAz cut -> |DCAz| < maxDcaz + dcaZPtPart/pT, in cm GeV/c; 0 keeps the cut flat"};
   Configurable<bool> setMCDefaultItsParams{"setMCDefaultItsParams", true, "set MC default parameters"};
 
   struct : ConfigurableGroup {
@@ -1287,7 +1289,14 @@ struct JetHadronsPid {
     if (track.pt() < minPt || track.pt() > maxPt) {
       return false;
     }
-    if (std::abs(track.dcaXY()) > maxDcaxy || std::abs(track.dcaZ()) > maxDcaz) {
+    // The DCA resolution worsens towards low pT, where multiple scattering
+    // dominates, so a cut fixed in cm is tight at low pT and very loose at
+    // high pT; the 1/pT term keeps it at a roughly constant number of sigmas.
+    // Leaving dcaXyPtPart and dcaZPtPart at zero reproduces a flat cut, so the
+    // two regimes need no switch. The pT cut above guarantees pt > 0 here.
+    const double maxDcaxyCut = maxDcaxy + dcaXyPtPart / track.pt();
+    const double maxDcazCut = maxDcaz + dcaZPtPart / track.pt();
+    if (std::abs(track.dcaXY()) > maxDcaxyCut || std::abs(track.dcaZ()) > maxDcazCut) {
       return false;
     }
     return true;
