@@ -104,7 +104,10 @@ struct JetHadronsPid {
   Configurable<double> deltaEtaEdge{"deltaEtaEdge", 0.05, "eta gap from the edge"};
 
   Configurable<bool> requirePvContributor{"requirePvContributor", false, "require that the track is a PV contributor"};
-  Configurable<int> minTpcNcrossedRows{"minTpcNcrossedRows", 70, "minimum number of TPC crossed pad rows"};
+  Configurable<int> minTpcNcrossedRows{"minTpcNcrossedRows", 100, "minimum number of TPC crossed pad rows"};
+  Configurable<int> minTpcNclusters{"minTpcNclusters", 110, "Minimum number of clusters in TPC"};
+  Configurable<int> minItsNclusters{"minItsNclusters", 7, "Minimum number of clusters in ITS"};
+  Configurable<int> minItsIbNclusters{"minItsIbNclusters", 3, "Minimum number of clusters in inner barrel (max 3) of ITS"};
   Configurable<double> minChiSquareTpc{"minChiSquareTpc", 0.0, "minimum TPC chi^2/Ncls"};
   Configurable<double> maxChiSquareTpc{"maxChiSquareTpc", 4.0, "maximum TPC chi^2/Ncls"};
   Configurable<double> maxChiSquareIts{"maxChiSquareIts", 36.0, "maximum ITS chi^2/Ncls"};
@@ -114,8 +117,8 @@ struct JetHadronsPid {
   Configurable<double> maxEta{"maxEta", +0.8, "maximum eta"};
   Configurable<double> maxDcaxy{"maxDcaxy", 0.004, "constant term of the DCAxy cut -> |DCAxy| < maxDcaxy + dcaXyPtPart/pT, in cm"};
   Configurable<double> maxDcaz{"maxDcaz", 0.004, "constant term of the DCAz cut -> |DCAz| < maxDcaz + dcaZPtPart/pT, in cm"};
-  Configurable<double> dcaXyPtPart{"dcaXyPtPart", 0.013, "pt-dependent term of the DCAxy cut -> |DCAxy| < maxDcaxy + dcaXyPtPart/pT, in cm GeV/c; 0 keeps the cut flat"};
-  Configurable<double> dcaZPtPart{"dcaZPtPart", 0.013, "pt-dependent term of the DCAz cut -> |DCAz| < maxDcaz + dcaZPtPart/pT, in cm GeV/c; 0 keeps the cut flat"};
+  Configurable<double> dcaXyPtPart{"dcaXyPtPart", 0.013, "pt-dependent term of the DCAxy cut -> |DCAxy| < maxDcaxy + dcaXyPtPart/pT"};
+  Configurable<double> dcaZPtPart{"dcaZPtPart", 0.013, "pt-dependent term of the DCAz cut -> |DCAz| < maxDcaz + dcaZPtPart/pT"};
   Configurable<bool> setMCDefaultItsParams{"setMCDefaultItsParams", true, "set MC default parameters"};
 
   struct : ConfigurableGroup {
@@ -1141,6 +1144,7 @@ struct JetHadronsPid {
     constexpr int ClosestMatch = 0;
     constexpr int ExclusiveMatch = 1;
     constexpr int RejectionBased = 2;
+    constexpr int NoRejection = 3;
 
     double const buffer = 999.0;
     double pt = track.pt();
@@ -1210,8 +1214,17 @@ struct JetHadronsPid {
     bool isPrMatch = (dForProtonsPr <= cfg.nSigmaCutPr);
 
     PidResult res{.isPion = false, .isKaon = false, .isProton = false};
-
-    if (cfg.pidMethod == ClosestMatch) {
+    if (cfg.pidMethod == NoRejection) {
+      if (isPiMatch) {
+        res.isPion = true;
+      }
+      if (isKaMatch) {
+        res.isKaon = true;
+      }
+      if (isPrMatch) {
+        res.isProton = true;
+      }
+    } else if (cfg.pidMethod == ClosestMatch) {
       if (isPiMatch && dForPionsPi < dForPionsKa && dForPionsPi < dForPionsPr) {
         res.isPion = true;
       }
@@ -1271,6 +1284,15 @@ struct JetHadronsPid {
     if (track.tpcNClsCrossedRows() < minTpcNcrossedRows) {
       return false;
     }
+    if (track.tpcNClsFound() < minTpcNclusters) {
+      return false;
+    }
+    if (track.itsNCls() < minItsNclusters) {
+      return false;
+    }
+    if (track.itsNClsInnerBarrel() < minItsIbNclusters) {
+      return false;
+    }
     if (!track.passedTPCCrossedRowsOverNCls()) {
       return false;
     }
@@ -1289,11 +1311,6 @@ struct JetHadronsPid {
     if (track.pt() < minPt || track.pt() > maxPt) {
       return false;
     }
-    // The DCA resolution worsens towards low pT, where multiple scattering
-    // dominates, so a cut fixed in cm is tight at low pT and very loose at
-    // high pT; the 1/pT term keeps it at a roughly constant number of sigmas.
-    // Leaving dcaXyPtPart and dcaZPtPart at zero reproduces a flat cut, so the
-    // two regimes need no switch. The pT cut above guarantees pt > 0 here.
     const double maxDcaxyCut = maxDcaxy + dcaXyPtPart / track.pt();
     const double maxDcazCut = maxDcaz + dcaZPtPart / track.pt();
     if (std::abs(track.dcaXY()) > maxDcaxyCut || std::abs(track.dcaZ()) > maxDcazCut) {
